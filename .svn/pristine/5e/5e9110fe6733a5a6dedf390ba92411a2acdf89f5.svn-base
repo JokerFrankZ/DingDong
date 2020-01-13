@@ -1,0 +1,39 @@
+<template>
+  <div class="container">
+    <div class="top-menu">
+      <top-menu />
+    </div>
+    <div class="top-search">
+      <top-search />
+    </div>
+    <div class="main-content">
+      <router-view />
+    </div>
+  </div>
+</template>
+
+<script>
+import topMenu from '@/components/topMenu/topMenu'
+import topSearch from '@/components/topSearch/topSearch'
+export default {
+  name: 'index',
+  components: {
+    topMenu,
+    topSearch
+  },
+  data: function() {
+    return {}
+  },
+  methods: {}
+}
+</script>
+
+<style scoped lang="stylus">
+.container
+  min-width 1000px
+  .top-search
+    height 100px
+  .main-content
+    max-width 1100px
+    margin 0 auto
+</style>

@@ -1,0 +1,32 @@
+<template>
+  <div class="container">
+    <div class="top-menu">
+      <top-menu />
+    </div>
+    <div class="top-search">
+      <top-search />
+    </div>
+  </div>
+</template>
+
+<script>
+import topMenu from '@/components/topMenu/topMenu'
+import topSearch from '@/components/topSearch/topSearch'
+export default {
+  name: 'index',
+  components: {
+    topMenu,
+    topSearch
+  },
+  data: function() {
+    return {}
+  },
+  methods: {}
+}
+</script>
+
+<style scoped lang="stylus">
+.container
+  .top-search
+    margin-top 30px
+</style>

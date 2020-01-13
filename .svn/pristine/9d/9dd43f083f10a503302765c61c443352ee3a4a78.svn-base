@@ -1,0 +1,123 @@
+<template>
+  <el-row class="top-search" type="flex" justify="center" align="middle">
+    <el-col class="search" :span="10">
+      <el-col class="search-box" :span="21">
+        <el-autocomplete
+          v-model="searchValue"
+          :fetch-suggestions="querySearch"
+          placeholder="请输入内容"
+          :trigger-on-focus="false"
+          @keydown.enter.native="goTo('/search')"
+        />
+      </el-col>
+      <el-col class="search-btn" :span="3" @click.native="goTo('/search')">
+        <i class="el-icon-search"></i>
+      </el-col>
+    </el-col>
+    <el-col :span="2" :offset="1" class="shopping-cart">
+      <i class="el-icon-shopping-cart-full"></i>
+      <span>
+        购物车
+      </span>
+    </el-col>
+  </el-row>
+</template>
+
+<script>
+export default {
+  name: 'topSearch',
+  data: function() {
+    return {
+      searchValue: '',
+      recommend: []
+    }
+  },
+  mounted() {
+    this.recommend = this.loadData
+  },
+  computed: {
+    loadData() {
+      return [
+        { value: '笔记本' },
+        { value: '笔记本电脑' },
+        { value: '笔记本子' },
+        { value: '笔记本文具' },
+        { value: '笔记本支架' },
+        { value: '笔记本自营' },
+        { value: '笔记本游戏本' },
+        { value: '笔记本硬盘' },
+        { value: '笔记本内存' },
+        { value: '笔记本散热器' },
+        { value: '笔记本内存条' },
+        { value: '笔记本电脑包' },
+        { value: '笔记本散热' }
+      ]
+    }
+  },
+  methods: {
+    querySearch(queryString, cb) {
+      var recommend = this.recommend
+      var results = queryString
+        ? recommend.filter(this.createFilter(queryString))
+        : recommend
+      // 调用 callback 返回建议列表的数据
+      cb(results)
+    },
+    createFilter(queryString) {
+      return recommend => {
+        return (
+          recommend.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        )
+      }
+    },
+    goTo(url) {
+      if (url === this.$route.path) {
+        this.$store.commit('querySearch', this.searchValue)
+        return
+      }
+      this.$router.push(url)
+      this.$store.commit('querySearch', this.searchValue)
+    }
+  }
+}
+</script>
+
+<style scoped lang="stylus">
+.top-search
+  width 100%
+  height 100%
+  .search
+    background #ff0000
+    height 52px
+    .search-box
+      height 52px
+      line-height 52px
+      padding-left 5px
+      .el-autocomplete
+        width 100%
+        >>> .el-input__inner
+          border none
+          font-size 14px
+          border-radius 0px
+    .search-btn
+      height 100%
+      display flex
+      justify-content center
+      align-items center
+      cursor pointer
+      .el-icon-search
+        color #fff
+        font-size 20px
+        display block
+  .shopping-cart
+    display flex
+    justify-content center
+    align-items center
+    height 52px
+    border 1px solid #eeeeee
+    color #ff0000
+    font-size 16px
+    cursor pointer
+    .el-icon-shopping-cart-full
+      margin-right 10px
+</style>

@@ -1,0 +1,61 @@
+<template>
+  <div class="top-search">
+    <div class="search">
+      <div class="search-box">
+        <el-autocomplete
+          class="inline-input"
+          v-model="searchValue"
+          :fetch-suggestions="querySearch"
+          placeholder="请输入内容"
+          :trigger-on-focus="false"
+        ></el-autocomplete>
+      </div>
+      <div class="search-btn">
+        <i class="el-icon-search"></i>
+      </div>
+    </div>
+    <div class="shopping-cart"></div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'topSearch',
+  data: function() {
+    return {
+      searchValue: '',
+      recommend: []
+    }
+  },
+  mounted() {
+    this.recommend = this.loadData
+  },
+  computed: {
+    loadData() {
+      return [
+        { value: '笔记本' },
+        { value: '笔记本电脑' },
+        { value: '笔记本子' },
+        { value: '笔记本文具' },
+        { value: '笔记本支架' },
+        { value: '笔记本自营' },
+        { value: '笔记本游戏本' },
+        { value: '笔记本硬盘' },
+        { value: '笔记本内存' },
+        { value: '笔记本散热器' },
+        { value: '笔记本内存条' },
+        { value: '笔记本电脑包' },
+        { value: '笔记本散热' }
+      ]
+    }
+  },
+  methods: {
+    querySearch(queryString, cb) {
+      let result = queryString ? this.recommend : 'aaa'
+      cb(result)
+    }
+  }
+}
+</script>
+
+<style scoped lang="stylus"></style>

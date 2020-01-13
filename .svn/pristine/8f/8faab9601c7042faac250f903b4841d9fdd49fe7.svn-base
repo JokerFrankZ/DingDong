@@ -1,0 +1,21 @@
+<template>
+  <div class="top-search">
+    <div class="search">
+      <div class="search-box"></div>
+      <div class="search-btn"></div>
+    </div>
+    <div class="shopping-cart"></div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'topSearch',
+  data: function() {
+    return {}
+  },
+  methods: {}
+}
+</script>
+
+<style scoped lang="stylus"></style>
