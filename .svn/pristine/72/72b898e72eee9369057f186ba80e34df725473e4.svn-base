@@ -7,14 +7,14 @@
         :key="index"
         class="goods"
       >
-        <div class="goods-box">
+        <div class="goods-box" @click="toGoodsDetail">
           <div class="img">
             <img :src="item.image" alt="" />
           </div>
           <div class="info">
             <h1 class="price">￥{{ item.price }}</h1>
-            <div class="name" @click.stop="toGoodsDetail">{{ item.name }}</div>
-            <div class="add-cart-btn" @click.stop="addShoppingCart(item)">
+            <div class="name">{{ item.name }}</div>
+            <div class="add-cart-btn">
               <i class="el-icon-shopping-cart-2"></i>
               加入购物车
             </div>
@@ -36,7 +36,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['searchStr', 'shoppingCart'])
+    ...mapGetters(['searchStr'])
   },
   watch: {
     goodsList: {
@@ -57,9 +57,7 @@ export default {
                 name: goods.name,
                 price: goods.price,
                 details: goods.details,
-                image: goods.image,
-                num: 1,
-                isSelect: true
+                image: goods.image
               }
             } else {
               //将不匹配的数据设置为空
@@ -88,9 +86,6 @@ export default {
         path: '/detailGoods'
       })
       window.open(href, '_blank')
-    },
-    addShoppingCart(item) {
-      this.$store.commit('addShoppingCart', item)
     }
   }
 }
@@ -111,6 +106,7 @@ export default {
         align-items center
         background #fff
         transition all 0.2s ease
+        cursor pointer
         &:hover
           box-shadow 0px 0px 3px #ccc
         .img
@@ -122,10 +118,6 @@ export default {
         .info
           width 90%
           margin-bottom 5%
-          .name
-            cursor pointer
-            &:hover
-              color #ff0000
           .price
             color #ff0000
             margin-bottom 10px

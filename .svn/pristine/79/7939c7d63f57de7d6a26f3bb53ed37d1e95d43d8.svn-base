@@ -11,15 +11,15 @@
     <div class="login">您好，请先<span>登录</span><span>免费注册</span></div>
     <ul class="menu-text">
       <li @mouseover="hideMenu">我的订单</li>
-      <li @mouseover="hideMenu">我的叮咚</li>
-      <li @mouseover="hideMenu">叮咚会员</li>
+      <li @mouseover="hideMenu">我的京东</li>
+      <li @mouseover="hideMenu">京东会员</li>
       <li @mouseover="hideMenu">企业采购</li>
       <li @mouseover="hideMenu">客户服务</li>
       <li @mouseenter="showMenu" :class="isActive">
         网站导航
         <i class="el-icon-arrow-down"></i>
       </li>
-      <li @mouseover="hideMenu">手机叮咚</li>
+      <li @mouseover="hideMenu">手机京东</li>
     </ul>
     <div class="menu-box" v-if="isShow" @mouseleave="hideMenu">
       <ul v-for="(value, index) in values" :key="index" class="menu">

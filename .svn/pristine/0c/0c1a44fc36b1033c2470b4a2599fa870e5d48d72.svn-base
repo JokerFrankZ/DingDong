@@ -1,0 +1,15 @@
+<template>
+  <div class="detail-goods">aa</div>
+</template>
+
+<script>
+export default {
+  name: 'detailGoods',
+  data: function() {
+    return {}
+  },
+  methods: {}
+}
+</script>
+
+<style scoped lang="stylus"></style>

@@ -14,26 +14,16 @@
         <i class="el-icon-search"></i>
       </el-col>
     </el-col>
-    <el-col
-      :span="2"
-      :offset="1"
-      @click.native="goTo('/shoppingCart')"
-      class="shopping-cart-box"
-    >
-      <el-badge :value="shoppingCart.length">
-        <div class="shopping-cart">
-          <i class="el-icon-shopping-cart-full"></i>
-          <span>
-            购物车
-          </span>
-        </div>
-      </el-badge>
+    <el-col :span="2" :offset="1" class="shopping-cart">
+      <i class="el-icon-shopping-cart-full"></i>
+      <span>
+        购物车
+      </span>
     </el-col>
   </el-row>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
   name: 'topSearch',
   data: function() {
@@ -64,9 +54,6 @@ export default {
       ]
     }
   },
-  computed: {
-    ...mapGetters(['shoppingCart'])
-  },
   methods: {
     querySearch(queryString, cb) {
       var recommend = this.recommend
@@ -84,24 +71,28 @@ export default {
       }
     },
     goTo(url) {
-      if (url === '/shoppingCart' && this.$route.path === '/shoppingCart') {
-        return
-      } else {
-        if (url === this.$route.path) {
-          this.$store.commit('querySearch', this.searchValue)
-          document.title =
-            this.searchValue === ''
-              ? '商品搜索-叮咚网'
-              : `${this.searchValue}-商品搜索-叮咚网`
-          return
-        }
-        this.$router.push(url)
+      /**
+       * 三元运算符进行判断，当searchValue为''时title为‘商品搜索-叮咚网’否则为`${this.searchValue}-商品搜索-叮咚网`*/
+      let title = ''
+      this.searchValue === ''
+        ? '商品搜索-叮咚网'
+        : `${this.searchValue}-商品搜索-叮咚网`
+      if (url === this.$route.path) {
         this.$store.commit('querySearch', this.searchValue)
-        document.title =
+        title =
           this.searchValue === ''
             ? '商品搜索-叮咚网'
             : `${this.searchValue}-商品搜索-叮咚网`
+        document.title = title
+        return
       }
+      this.$router.push(url)
+      this.$store.commit('querySearch', this.searchValue)
+      title =
+        this.searchValue === ''
+          ? '商品搜索-叮咚网'
+          : `${this.searchValue}-商品搜索-叮咚网`
+      document.title = title
     }
   }
 }
@@ -134,17 +125,15 @@ export default {
         color #fff
         font-size 20px
         display block
-  .shopping-cart-box
-    text-align center
+  .shopping-cart
+    display flex
+    justify-content center
+    align-items center
+    height 52px
     border 1px solid #eeeeee
-    .shopping-cart
-      display flex
-      justify-content center
-      align-items center
-      height 52px
-      color #ff0000
-      font-size 16px
-      cursor pointer
-      .el-icon-shopping-cart-full
-        margin-right 10px
+    color #ff0000
+    font-size 16px
+    cursor pointer
+    .el-icon-shopping-cart-full
+      margin-right 10px
 </style>

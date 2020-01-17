@@ -7,7 +7,7 @@
       <top-search />
     </div>
     <div class="main-content">
-      <keep-alive exclude="shoppingCart">
+      <keep-alive>
         <router-view />
       </keep-alive>
     </div>

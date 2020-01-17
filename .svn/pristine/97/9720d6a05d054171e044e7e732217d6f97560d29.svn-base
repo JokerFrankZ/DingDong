@@ -29,13 +29,6 @@ export default new Router({
       meta: {
         title: '商品详细-叮咚网'
       }
-    },
-    {
-      path: '/shoppingCart',
-      component: () => import('@/views/shoppingCart/shoppingCart'),
-      meta: {
-        title: '购物车-叮咚网'
-      }
     }
   ]
 })
