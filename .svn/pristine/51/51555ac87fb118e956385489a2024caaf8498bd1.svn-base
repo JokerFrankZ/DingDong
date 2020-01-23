@@ -95,7 +95,7 @@
       </div>
       <div class="intr-view">
         <div class="detail-goods-intr" v-show="currentIndex === 0">
-          <detail-goods-intr :intrValue="detailGoods.details.intr.img" />
+          <detail-goods-intr />
         </div>
         <div class="detail-goods-spec" v-show="currentIndex === 1">
           <detail-goods-spec />
@@ -109,6 +109,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import goodsSwiper from '@/views/goods/goodsSwiper'
 import detailGoodsIntr from '@/views/goods/detailGoodsIntr'
 import detailGoodsSpec from '@/views/goods/detailGoodsSpec'
@@ -131,7 +132,14 @@ export default {
       currentIndex: 0
     }
   },
-  created() {
+  computed: {
+    ...mapGetters(['detailGoodsTitle']),
+    detailTitle() {
+      return this.detailGoodsTitle
+    }
+  },
+  mounted() {
+    document.title = this.detailTitle
     this.detailGoods = JSON.parse(sessionStorage.getItem('detailGoods'))
   },
   filters: {
@@ -154,8 +162,6 @@ export default {
       padding-left 20px
       display flex
       flex-direction column
-      position relative
-      overflow hidden
       .goods-name
         width 630px
         font-size 16px
@@ -185,8 +191,10 @@ export default {
         border-bottom 1px solid #f3f3f3
         .select-box
           margin-left 10px
-    .options
+    .options,.btn
       padding 10px 0px 10px 10px
+    .options
+      border-bottom 1px solid #f3f3f3
       .options-item
         display flex
         margin-bottom 20px
@@ -212,16 +220,9 @@ export default {
               background #fff
               color #666
     .btn
-      width 100%
       display flex
       align-items center
-      justify-content flex-end
-      padding 10px 0
-      position absolute
-      bottom 32px
-      border-top 1px solid #f3f3f3
       .counter
-        margin-right 20px
         .el-input-number--mini
           width 100px
       .add-cart
@@ -233,15 +234,12 @@ export default {
         font-size 18px
         font-weight bold
         text-align center
-        margin-right 20px
+        margin-left 20px
         cursor pointer
     .tips
       font-size 12px
       color #999999
       letter-spacing 1em
-      position absolute
-      bottom 10px
-      right 0
   .goods-detail-intr
     .intr-tab-bar
       display flex

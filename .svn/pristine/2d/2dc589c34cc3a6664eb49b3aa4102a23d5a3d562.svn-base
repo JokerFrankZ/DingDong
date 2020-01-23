@@ -2,7 +2,34 @@
   <div class="detail-goods">
     <div class="goods-intr">
       <div class="preview">
-        <goods-swiper :imgUrls="detailGoods.details.image_set" />
+        <swiper :options="swiperTop" class="swiper-top" ref="swiperTop">
+          <swiper-slide
+            v-for="(imgUrl, index) in detailGoods.details.image_set"
+            :key="index"
+          >
+            <img :src="imgUrl" alt="" />
+          </swiper-slide>
+          <div
+            class="swiper-button-prev swiper-button-white"
+            slot="button-prev"
+          ></div>
+          <div
+            class="swiper-button-next swiper-button-white"
+            slot="button-next"
+          ></div>
+        </swiper>
+        <swiper
+          :options="swiperThumbs"
+          class="swiper-thumbs"
+          ref="swiperThumbs"
+        >
+          <swiper-slide
+            v-for="(imgUrl, index) in detailGoods.details.image_set"
+            :key="index"
+          >
+            <img :src="imgUrl" alt="" />
+          </swiper-slide>
+        </swiper>
       </div>
       <div class="goods-info">
         <div class="base-info">
@@ -26,22 +53,36 @@
           </div>
         </div>
         <div class="options">
-          <div
-            class="options-item"
-            v-for="(items, index) in detailGoods.details.specs"
-            :key="index"
-          >
-            <div class="goods-label">{{ items.name }}</div>
+          <div class="options-item">
+            <div class="goods-label">选择颜色</div>
             <ul>
-              <li v-for="(item, i) in items.value" :key="i">
-                <img :src="item.img" alt="" v-if="item.img" />
-                <span
-                  :class="{
-                    'options-item-text': item.img,
-                    'options-item-text-notImg': !item.img
-                  }"
-                  >{{ item.name }}</span
-                >
+              <li>
+                <img
+                  src="//img14.360buyimg.com/n9/s40x40_jfs/t1/57947/9/13596/240909/5da7e39dE7b18ef8c/f14ffc1e8a150bee.jpg"
+                  alt=""
+                />
+                <span class="options-item-text">i3 4G+128G</span>
+              </li>
+              <li>
+                <img
+                  src="//img14.360buyimg.com/n9/s40x40_jfs/t1/57947/9/13596/240909/5da7e39dE7b18ef8c/f14ffc1e8a150bee.jpg"
+                  alt=""
+                />
+                <span class="options-item-text">i3 4G+128G</span>
+              </li>
+              <li>
+                <img
+                  src="//img14.360buyimg.com/n9/s40x40_jfs/t1/57947/9/13596/240909/5da7e39dE7b18ef8c/f14ffc1e8a150bee.jpg"
+                  alt=""
+                />
+                <span class="options-item-text">i3 4G+128G</span>
+              </li>
+              <li>
+                <img
+                  src="//img14.360buyimg.com/n9/s40x40_jfs/t1/57947/9/13596/240909/5da7e39dE7b18ef8c/f14ffc1e8a150bee.jpg"
+                  alt=""
+                />
+                <span class="options-item-text">i3 4G+128G</span>
               </li>
             </ul>
           </div>
@@ -80,7 +121,7 @@
           }"
           @click="currentIndex = 1"
         >
-          规格与包装
+          商品介绍
         </div>
         <div
           :class="{
@@ -89,13 +130,13 @@
           }"
           @click="currentIndex = 2"
         >
-          商品评价
+          商品介绍
         </div>
         <div class="intr-tab-item-space"></div>
       </div>
       <div class="intr-view">
         <div class="detail-goods-intr" v-show="currentIndex === 0">
-          <detail-goods-intr :intrValue="detailGoods.details.intr.img" />
+          <detail-goods-intr />
         </div>
         <div class="detail-goods-spec" v-show="currentIndex === 1">
           <detail-goods-spec />
@@ -109,15 +150,14 @@
 </template>
 
 <script>
-import goodsSwiper from '@/views/goods/goodsSwiper'
+import options from './cityCode'
+import { mapGetters } from 'vuex'
 import detailGoodsIntr from '@/views/goods/detailGoodsIntr'
 import detailGoodsSpec from '@/views/goods/detailGoodsSpec'
 import detailGoodsComment from '@/views/goods/detailGoodsComment'
-import options from './cityCode'
 export default {
   name: 'detailGoods',
   components: {
-    goodsSwiper,
     detailGoodsIntr,
     detailGoodsSpec,
     detailGoodsComment
@@ -125,13 +165,38 @@ export default {
   data: function() {
     return {
       detailGoods: [],
+      swiperTop: {
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }
+      },
+      swiperThumbs: {
+        centeredSlides: true,
+        slidesPerView: 'auto',
+        touchRatio: 0.2,
+        slideToClickedSlide: true
+      },
+      options,
       selectCity: [],
       num: 1,
-      options,
       currentIndex: 0
     }
   },
-  created() {
+  computed: {
+    ...mapGetters(['detailGoodsTitle']),
+    detailTitle() {
+      return this.detailGoodsTitle
+    }
+  },
+  mounted() {
+    document.title = this.detailTitle
+    this.$nextTick(() => {
+      const swiperTop = this.$refs.swiperTop.swiper
+      const swiperThumbs = this.$refs.swiperThumbs.swiper
+      swiperTop.controller.control = swiperThumbs
+      swiperThumbs.controller.control = swiperTop
+    })
     this.detailGoods = JSON.parse(sessionStorage.getItem('detailGoods'))
   },
   filters: {
@@ -150,12 +215,27 @@ export default {
     .preview
       width 450px
       background #f3f3f3
+      .swiper-top,.swiper-thumbs
+        width 100%
+      .swiper-top
+        height 450px
+      .swiper-thumbs
+        height 87px
+        .swiper-slide
+          width 20%
+          display flex
+          justify-content center
+          align-items center
+          cursor pointer
+          img
+            width 75px
+            height 75px
+            &:hover
+              border 1px solid #ff0000
     .goods-info
       padding-left 20px
       display flex
       flex-direction column
-      position relative
-      overflow hidden
       .goods-name
         width 630px
         font-size 16px
@@ -185,11 +265,12 @@ export default {
         border-bottom 1px solid #f3f3f3
         .select-box
           margin-left 10px
-    .options
+    .options,.btn
       padding 10px 0px 10px 10px
+    .options
+      border-bottom 1px solid #f3f3f3
       .options-item
         display flex
-        margin-bottom 20px
         ul
           display flex
           li
@@ -207,21 +288,10 @@ export default {
             .options-item-text
               padding 0 10px
               color #666
-            .options-item-text-notImg
-              padding 10px
-              background #fff
-              color #666
     .btn
-      width 100%
       display flex
       align-items center
-      justify-content flex-end
-      padding 10px 0
-      position absolute
-      bottom 32px
-      border-top 1px solid #f3f3f3
       .counter
-        margin-right 20px
         .el-input-number--mini
           width 100px
       .add-cart
@@ -233,15 +303,12 @@ export default {
         font-size 18px
         font-weight bold
         text-align center
-        margin-right 20px
+        margin-left 20px
         cursor pointer
     .tips
       font-size 12px
       color #999999
       letter-spacing 1em
-      position absolute
-      bottom 10px
-      right 0
   .goods-detail-intr
     .intr-tab-bar
       display flex

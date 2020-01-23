@@ -109,6 +109,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import goodsSwiper from '@/views/goods/goodsSwiper'
 import detailGoodsIntr from '@/views/goods/detailGoodsIntr'
 import detailGoodsSpec from '@/views/goods/detailGoodsSpec'
@@ -131,7 +132,14 @@ export default {
       currentIndex: 0
     }
   },
+  computed: {
+    ...mapGetters(['detailGoodsTitle']),
+    detailTitle() {
+      return this.detailGoodsTitle
+    }
+  },
   created() {
+    document.title = this.detailTitle
     this.detailGoods = JSON.parse(sessionStorage.getItem('detailGoods'))
   },
   filters: {
